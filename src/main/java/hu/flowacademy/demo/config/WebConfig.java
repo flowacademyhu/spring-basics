@@ -1,4 +1,4 @@
-package hu.flowacademy.demo;
+package hu.flowacademy.demo.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

@@ -1,4 +1,4 @@
-package hu.flowacademy.demo;
+package hu.flowacademy.demo.persistence.repository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package hu.flowacademy.demo;
+package hu.flowacademy.demo.persistence.service;
 
 import org.springframework.stereotype.Service;
 

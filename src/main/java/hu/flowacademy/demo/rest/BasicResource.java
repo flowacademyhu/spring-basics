@@ -1,11 +1,10 @@
-package hu.flowacademy.demo;
+package hu.flowacademy.demo.rest;
 
+import hu.flowacademy.demo.component.MyComp;
+import hu.flowacademy.demo.component.Singleton;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,14 +19,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BasicResource {
 
-  @Autowired
+//  @Autowired
+//  private MyComp myComp;
+
+//  private final MyComp myComp;
+
+//  public BasicResource(MyComp myComp) {
+//    this.myComp = myComp;
+//    integerObjectMap.put(1, "Task1");
+//    integerObjectMap.put(2, "Task2");
+//    integerObjectMap.put(3, "Task3");
+//  }
+
   private MyComp myComp;
+
+  @Autowired
+  public void setMyComp(MyComp myComp) {
+    this.myComp = myComp;
+  }
 
   @GetMapping("/sayHello")
   public String getSomething() {
-//    return "Hello world! " + myComp.inc();
     return Singleton.getInstance().addChar("b");
   }
+
+
   Map<Integer, Object> integerObjectMap = new HashMap<>();
 
   public BasicResource() {

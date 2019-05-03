@@ -1,4 +1,4 @@
-package hu.flowacademy.demo;
+package hu.flowacademy.demo.component;
 
 public class Singleton {
 
