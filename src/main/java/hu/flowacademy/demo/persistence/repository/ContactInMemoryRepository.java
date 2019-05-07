@@ -5,19 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ContactRepository {
+public class ContactInMemoryRepository {
 
-  private Map<String, Contact> contacts = new HashMap<>();
+  private Map<Long, Contact> contacts = new HashMap<>();
 
   public Contact save(Contact contact) {
-    String id = UUID.randomUUID().toString();
-    contact.setId(id);
-    contacts.put(id, contact);
+//    String id = UUID.randomUUID().toString();
+    contact.setId(new Random().nextLong());
+    contacts.put(contact.getId(), contact);
     return contact;
   }
 
@@ -30,15 +31,15 @@ public class ContactRepository {
     return contacts.entrySet().stream().map(Entry::getValue).collect(Collectors.toList());
   }
 
-  public Contact findOne(String id) {
+  public Contact findOne(Long id) {
     return contacts.get(id);
   }
 
-  public void delete(String id) {
+  public void delete(Long id) {
     contacts.remove(id);
   }
 
-  public boolean exists(String id) {
+  public boolean exists(Long id) {
     return contacts.containsKey(id);
   }
 }

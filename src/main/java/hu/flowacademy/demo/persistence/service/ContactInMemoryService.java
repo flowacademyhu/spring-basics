@@ -3,18 +3,18 @@ package hu.flowacademy.demo.persistence.service;
 import hu.flowacademy.demo.exception.ContactNotFoundException;
 import hu.flowacademy.demo.exception.ContactValidationException;
 import hu.flowacademy.demo.persistence.model.Contact;
-import hu.flowacademy.demo.persistence.repository.ContactRepository;
+import hu.flowacademy.demo.persistence.repository.ContactInMemoryRepository;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ContactService {
+public class ContactInMemoryService {
 
-  private final ContactRepository contactRepository;
+  private final ContactInMemoryRepository contactRepository;
 
-  public ContactService(
-      ContactRepository contactRepository) {
+  public ContactInMemoryService(
+      ContactInMemoryRepository contactRepository) {
     this.contactRepository = contactRepository;
   }
 
@@ -39,11 +39,11 @@ public class ContactService {
     return contactRepository.findAll();
   }
 
-  public Contact findOne(String id) {
+  public Contact findOne(Long id) {
     return contactRepository.findOne(id);
   }
 
-  public void delete(String id) {
+  public void delete(Long id) {
     if (!contactRepository.exists(id)) {
       throw new ContactNotFoundException();
     }

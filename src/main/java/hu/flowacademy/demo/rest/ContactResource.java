@@ -1,10 +1,9 @@
 package hu.flowacademy.demo.rest;
 
 import hu.flowacademy.demo.persistence.model.Contact;
-import hu.flowacademy.demo.persistence.service.ContactService;
+import hu.flowacademy.demo.persistence.service.ContactJPAService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/contact")
 public class ContactResource {
 
+//  @Autowired
+//  private ContactService contactService;
+
   @Autowired
-  private ContactService contactService;
+  private ContactJPAService contactService;
 
   @GetMapping("/")
   public List<Contact> findAll() {
@@ -28,7 +30,7 @@ public class ContactResource {
   }
 
   @GetMapping("/{id}")
-  public Contact findOne(@PathVariable String id) {
+  public Contact findOne(@PathVariable Long id) {
     return contactService.findOne(id);
   }
 
@@ -43,7 +45,7 @@ public class ContactResource {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable String id) {
+  public ResponseEntity<Void> delete(@PathVariable Long id) {
     contactService.delete(id);
     return ResponseEntity.noContent().build();
   }
