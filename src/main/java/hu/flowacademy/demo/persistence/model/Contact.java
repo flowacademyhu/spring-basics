@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 // TODO if entity has name, you need to use it in HQL queries
 @Entity
-@Table
+@Table(name = "contacts")
 public class Contact {
 
   @Id
