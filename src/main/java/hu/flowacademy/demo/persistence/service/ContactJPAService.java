@@ -7,8 +7,10 @@ import hu.flowacademy.demo.persistence.repository.ContactJPARepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ContactJPAService {
 
   private final ContactJPARepository contactJPARepository;

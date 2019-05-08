@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -15,7 +16,7 @@ public class Contact {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_seq")
-  @SequenceGenerator(name = "contact_seq", allocationSize = Integer.MAX_VALUE, initialValue = 2, sequenceName = "contact_seq")
+  @SequenceGenerator(name = "contact_seq", initialValue = 2, sequenceName = "contact_seq")
   @Column
   private Long id;
 
@@ -33,6 +34,10 @@ public class Contact {
 
   @Column
   private String email;
+
+  // user.contact.id == this.id
+  @OneToOne(mappedBy = "contact")
+  private User user;
 
   public Long getId() {
     return id;
@@ -80,5 +85,13 @@ public class Contact {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 }
