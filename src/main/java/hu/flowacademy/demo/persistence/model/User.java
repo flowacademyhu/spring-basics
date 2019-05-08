@@ -1,11 +1,18 @@
 package hu.flowacademy.demo.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -32,6 +39,11 @@ public class User {
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "contact_id", referencedColumnName = "id")
   private Contact contact;
+
+  @JsonProperty
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "role_id", referencedColumnName = "id")
+  private Role role;
 
   public String getUsername() {
     return username;
@@ -67,6 +79,14 @@ public class User {
 
   public LocalDate getDeletedAt() {
     return deletedAt;
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
   }
 
   public void setDeletedAt(LocalDate deletedAt) {
