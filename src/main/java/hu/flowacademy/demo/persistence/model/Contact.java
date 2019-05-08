@@ -1,10 +1,15 @@
 package hu.flowacademy.demo.persistence.model;
 
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -38,6 +43,12 @@ public class Contact {
   // user.contact.id == this.id
   @OneToOne(mappedBy = "contact")
   private User user;
+
+  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JoinTable(name = "foods_contacts_happiness",
+  joinColumns = @JoinColumn(name = "food_id"),
+  inverseJoinColumns = @JoinColumn(name = "contact_id"))
+  private List<Food> foods;
 
   public Long getId() {
     return id;
@@ -93,5 +104,13 @@ public class Contact {
 
   public void setUser(User user) {
     this.user = user;
+  }
+
+  public List<Food> getFoods() {
+    return foods;
+  }
+
+  public void setFoods(List<Food> foods) {
+    this.foods = foods;
   }
 }
