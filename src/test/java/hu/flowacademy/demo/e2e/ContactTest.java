@@ -8,6 +8,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.function.Consumer;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,20 +26,45 @@ public class ContactTest {
     HttpRequest request = HttpRequest.newBuilder()
         .uri(URI.create(PATH))
         .header(CONTENT_TYPE, APPLICATION_JSON)
-        .POST(BodyPublishers.ofString(new Gson().toJson(getContact())))
+        .POST(BodyPublishers.ofString(new Gson().toJson(getContact(null, null))))
         .build();
-    sendRequest(request);
+    sendRequest(request, contact -> Assert.assertNotNull(contact.getId()));
   }
 
-  private void sendRequest(HttpRequest request) throws IOException, InterruptedException {
+  @Test
+  public void testPutEndpoint() throws IOException, InterruptedException {
+    Contact sentContact = getContact(5L, 0L);
+    HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(PATH))
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .PUT(BodyPublishers.ofString(new Gson().toJson(sentContact)))
+        .build();
+    sendRequest(request, contact -> Assert.assertEquals(contact.getName(), sentContact.getName()));
+  }
+
+  @Test
+  public void testDeleteEndpoint() throws IOException, InterruptedException {
+    HttpRequest request = HttpRequest.newBuilder()
+        .uri(URI.create(PATH + 11))
+        .header(CONTENT_TYPE, APPLICATION_JSON)
+        .DELETE()
+        .build();
+    sendRequest(request, null);
+  }
+
+  private void sendRequest(HttpRequest request, Consumer<Contact> validateMethod) throws IOException, InterruptedException {
     HttpClient client = HttpClient.newHttpClient();
 
     client.sendAsync(request, BodyHandlers.ofString())
         .thenApply(response -> {
           if (response.statusCode() > 400) {
-            throw new RuntimeException("Elbasztuk: " + response.statusCode());
+            throw new RuntimeException("Invalid request: " + response.statusCode());
           }
-          return response.body();
+          String body = response.body();
+          if (validateMethod != null) {
+            validateMethod.accept(new Gson().fromJson(body, Contact.class));
+          }
+          return body;
         })
         .thenAccept(System.out::println)
         .join();
@@ -51,13 +78,14 @@ public class ContactTest {
 //    Assert.assertNotNull(contact.getId());
   }
 
-  private Contact getContact() {
+  private Contact getContact(Long id, Long version) {
     var contact = new Contact();
-//    contact.setId(12L);
+    contact.setId(id);
     contact.setName("Ferenc");
     contact.setMobileNumber("+666");
     contact.setAddress("Itt-ott");
     contact.setEmail("nincs");
+    contact.setVersion(version);
     return contact;
   }
 
