@@ -3,6 +3,7 @@
 #  - value1
 #  - value2
 #  - value3
+
 spring:
   datasource:
     url: jdbc:postgresql://127.0.0.1:5432/contact_store
