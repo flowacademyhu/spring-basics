@@ -1,5 +1,6 @@
 package hu.flowacademy.demo.persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 // TODO if entity has name, you need to use it in HQL queries
 @Entity
@@ -40,10 +42,15 @@ public class Contact {
   @Column
   private String email;
 
+  @Column
+  @Version
+  private Long version;
+
   // user.contact.id == this.id
   @OneToOne(mappedBy = "contact")
   private User user;
 
+  @JsonIgnore
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   @JoinTable(name = "foods_contacts_happiness",
   joinColumns = @JoinColumn(name = "food_id"),
@@ -112,5 +119,13 @@ public class Contact {
 
   public void setFoods(List<Food> foods) {
     this.foods = foods;
+  }
+
+  public Long getVersion() {
+    return version;
+  }
+
+  public void setVersion(Long version) {
+    this.version = version;
   }
 }
